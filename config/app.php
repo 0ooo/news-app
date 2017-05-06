@@ -177,6 +177,9 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        //debugbar laravel-tracy
+        Recca0120\LaravelTracy\LaravelTracyServiceProvider::class,
+
     ],
 
     /*
