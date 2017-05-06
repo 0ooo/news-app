@@ -23,6 +23,6 @@ return [
         'request' => true,
         'auth' => true,
         'html-validator' => false,
-        'terminal' => true,
+        'terminal' => false,
     ],
 ];
