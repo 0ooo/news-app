@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+use Parsedown;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,5 +25,22 @@ class News extends Model
     public function setTitleAttribute($value) {
         $this->attributes['title'] = $value;
         $this->attributes['slug'] = str_slug($value);
+    }
+
+    /**
+     * Удаляет опасный код
+     * @param $value
+     */
+    public function setContentAttribute($value){
+        $this->attributes['content'] = clean($value);
+    }
+
+    /**
+     * Преобразует markdown в html
+     * Для вывода в news.show использовать {!! $news->markdownContent !!}
+     * @return string
+     */
+    public function getMarkdownContentAttribute() {
+        return (new Parsedown)->text($this->attributes['content']);
     }
 }
