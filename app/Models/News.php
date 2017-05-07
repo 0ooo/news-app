@@ -43,4 +43,13 @@ class News extends Model
     public function getMarkdownContentAttribute() {
         return (new Parsedown)->text($this->attributes['content']);
     }
+
+    /**
+     * Вместо id в url будет отображаться slug
+     * @return string - slug название статьи
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 }
