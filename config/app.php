@@ -177,11 +177,12 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        //debugbar laravel-tracy
+        // debugbar laravel-tracy
         Recca0120\LaravelTracy\LaravelTracyServiceProvider::class,
         //Laravel Collective Forms & HTML
         Collective\Html\HtmlServiceProvider::class,
-
+        // HTMLPurifier
+        Mews\Purifier\PurifierServiceProvider::class,
     ],
 
     /*
@@ -234,6 +235,8 @@ return [
         // Laravel Collective
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
+        // HTMLPurifier
+        'Purifier' => Mews\Purifier\Facades\Purifier::class,
     ],
 
 ];
