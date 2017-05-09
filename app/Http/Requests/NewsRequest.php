@@ -26,7 +26,10 @@ class NewsRequest extends FormRequest
     public function rules()
     {
         return [
-            'title'  => 'required|min:10',
+            //'title'  => 'required|min:10',
+            // нужна проверка на уникальность, и отдельный реквест для
+            // метода update (либо допилить этот)
+            'title'  => 'required|min:10|unique:news',
             'content'  => 'required|min:150'
         ];
     }

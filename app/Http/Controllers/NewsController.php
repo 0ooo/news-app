@@ -27,6 +27,7 @@ class NewsController extends Controller
      */
     public function create()
     {
+        /*
         $user = \Auth::user();
         foreach ($user->roles as $role) {
             if ($role->slug === 'admin' || $role->slug === 'moderator'){
@@ -35,6 +36,14 @@ class NewsController extends Controller
                 return redirect('/news');
             }
         }
+        */
+       // здорово конечно, но не нужно усложнять себе жизнь, чем меньше кода, тем лучше
+       // проверку роли можно вынести будет в middleware, а пока так.
+       if (auth()->user()->roles->intersect(['admin', 'moderator'])->count() >= 1) {
+           return view('news.forms.create');
+       }
+       return redirect('/news');
+       
     }
 
     /**
@@ -44,12 +53,16 @@ class NewsController extends Controller
      */
     public function store(NewsRequest $request)
     {
+        /*
         $news = new News;
         $news->title = $request->title;
         $news->content = $request->content;
         $news->user_id = \Auth::user()->id;
 
         $news->save();
+        */
+        // можно короче.
+        auth()->user()->news()->create($request->all());
         return redirect('/news')->with('info', 'Новость успешно добавлена');
     }
 
@@ -61,7 +74,9 @@ class NewsController extends Controller
      */
     public function show(News $news)
     {
-        $user = User::find($news->user_id);
+        // $user = User::find($news->user_id);
+        // у тебя уже все есть, это лишние действия.
+        $user = $news->user;
         return view('news.show',compact('news','user'));
     }
 
@@ -84,11 +99,15 @@ class NewsController extends Controller
      */
     public function update(NewsRequest $request, $id)
     {
+        /*
         $news = News::find($id);
         $news->title  = $request->title;
         $news->content = $request->content;
 
         $news->save();
+        */
+        // можно проще.
+        News::where('id', $id)->update($request-all());
         return redirect('/news')->with('info', 'Новость успешно изменена');
     }
 
@@ -100,12 +119,19 @@ class NewsController extends Controller
      */
     public function destroy(News $news)
     {
+        /**
         $user = \Auth::user();
         foreach ($user->roles as $role) {
             if ($role->slug === 'admin') {
                 $news->delete();
                 return redirect('/news')->with('info', 'Новость успешно удалена');
             }
+        }
+        */
+        // как и выше
+        if (auth()->user()->roles->contains('admin')) {
+            $news->delete();
+            return redirect('/news')->with('info', 'Новость успешно удалена');
         }
         return redirect('/news')->with('info', 'У вас нет прав для этого действия');
     }

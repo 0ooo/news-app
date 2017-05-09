@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
 {
+    // коменты добавить
     public $timestamps = false;
 
     /**
