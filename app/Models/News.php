@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Models;
-use Parsedown;
 
+use Parsedown;
 use Illuminate\Database\Eloquent\Model;
 
 class News extends Model
