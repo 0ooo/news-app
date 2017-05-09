@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\News;
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Requests\NewsRequest;
 
 class NewsController extends Controller
 {
@@ -14,7 +16,8 @@ class NewsController extends Controller
      */
     public function index()
     {
-        //
+        $news = News::all();
+        return view('news.index', compact('news'));
     }
 
     /**
@@ -24,18 +27,30 @@ class NewsController extends Controller
      */
     public function create()
     {
-        //
+        $user = \Auth::user();
+        foreach ($user->roles as $role) {
+            if ($role->slug === 'admin' || $role->slug === 'moderator'){
+                return view('news.forms.create');
+            }else{
+                return redirect('/news');
+            }
+        }
     }
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param NewsRequest $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(NewsRequest $request)
     {
-        //
+        $news = new News;
+        $news->title = $request->title;
+        $news->content = $request->content;
+        $news->user_id = \Auth::user()->id;
+
+        $news->save();
+        return redirect('/news')->with('info', 'Новость успешно добавлена');
     }
 
     /**
@@ -46,7 +61,8 @@ class NewsController extends Controller
      */
     public function show(News $news)
     {
-        //
+        $user = User::find($news->user_id);
+        return view('news.show',compact('news','user'));
     }
 
     /**
@@ -57,19 +73,23 @@ class NewsController extends Controller
      */
     public function edit(News $news)
     {
-        //
+        return view('news.forms.edit', compact('news'));
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\News  $news
-     * @return \Illuminate\Http\Response
+     * @param NewsRequest $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, News $news)
+    public function update(NewsRequest $request, $id)
     {
-        //
+        $news = News::find($id);
+        $news->title  = $request->title;
+        $news->content = $request->content;
+
+        $news->save();
+        return redirect('/news')->with('info', 'Новость успешно изменена');
     }
 
     /**
@@ -80,6 +100,13 @@ class NewsController extends Controller
      */
     public function destroy(News $news)
     {
-        //
+        $user = \Auth::user();
+        foreach ($user->roles as $role) {
+            if ($role->slug === 'admin') {
+                $news->delete();
+                return redirect('/news')->with('info', 'Новость успешно удалена');
+            }
+        }
+        return redirect('/news')->with('info', 'У вас нет прав для этого действия');
     }
 }
