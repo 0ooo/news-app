@@ -29,7 +29,7 @@ class NewsController extends Controller
     public function index()
     {
         $roles = auth()->user()->roles()->pluck('slug');
-        $news = News::all();
+        $news = News::paginate(5);
         return view('news.index', compact('news','roles'));
     }
 
@@ -64,7 +64,8 @@ class NewsController extends Controller
     public function show(News $news)
     {
         $user = $news->user;
-        return view('news.show',compact('news','user'));
+        $roles = auth()->user()->roles()->pluck('slug');
+        return view('news.show',compact('news','user','roles'));
     }
 
     /**
