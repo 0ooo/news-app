@@ -29,7 +29,7 @@ class User extends Authenticatable
 
     /**
      * Связь один ко многим
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function news()
@@ -39,7 +39,7 @@ class User extends Authenticatable
 
     /**
      * Связь многие ко многим
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function roles()

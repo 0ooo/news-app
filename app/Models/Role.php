@@ -6,11 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
 {
-    // коменты добавить
+    /**
+     * Отключает создание в таблице полей created_at и updated_at
+     *
+     * @var bool
+     */
     public $timestamps = false;
 
     /**
-     * Свзяь «многие ко многим»
+     * Свзяь многие ко многим
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function users()

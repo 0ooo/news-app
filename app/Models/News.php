@@ -7,16 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class News extends Model
 {
-    // Не забываем о коментах
     /**
-     * Заполняемые свойства модели.
-     * 
+     * Заполняемые свойства модели
+     *
      * @var array
      */
     protected $fillable = ['title', 'slug', 'content'];
 
     /**
-     * Обратное отношение «один ко многим»
+     * Обратное отношение один ко многим
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
@@ -26,7 +26,7 @@ class News extends Model
 
     /**
      * Автоматически генерирует slug для title новости
-     * 
+     *
      * @param $value string - значение поля title (Название статьи)
      */
     public function setTitleAttribute($value) {
@@ -36,7 +36,7 @@ class News extends Model
 
     /**
      * Удаляет опасный код
-     * 
+     *
      * @param $value
      */
     public function setContentAttribute($value){
@@ -46,7 +46,7 @@ class News extends Model
     /**
      * Преобразует markdown в html
      * Для вывода в news.show использовать {!! $news->markdownContent !!}
-     * 
+     *
      * @return string
      */
     public function getMarkdownContentAttribute() {
@@ -55,7 +55,7 @@ class News extends Model
 
     /**
      * Вместо id в url будет отображаться slug
-     * 
+     *
      * @return string - slug название статьи
      */
     public function getRouteKeyName()
